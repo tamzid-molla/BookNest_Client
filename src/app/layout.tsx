@@ -34,7 +34,9 @@ export default function RootLayout({
           <NavBar></NavBar>
           </Card>
         </header>
+        <main>
         {children}
+        </main>
       </body>
     </html>
   );

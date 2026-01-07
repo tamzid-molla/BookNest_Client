@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "../ui/button";
 
 export default function NavBar() {
@@ -6,8 +7,12 @@ export default function NavBar() {
       <div className="flex justify-between max-w-7xl mx-auto">
         <h3 className="font-bold text-2xl">BookNest</h3>
         <div className="flex items-center gap-8">
+          <Link href={'/login'}>
           <Button>Login</Button>
+          </Link>
+          <Link href={'/register'}>
           <Button>Register</Button>
+          </Link>
         </div>
       </div>
     </nav>

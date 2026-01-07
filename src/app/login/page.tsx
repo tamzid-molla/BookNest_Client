@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +11,23 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter()
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+     e.preventDefault();
+    const form = e.currentTarget;
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const password = (form.elements.namedItem("password") as HTMLInputElement).value;
+    const user = await axios.post("http://localhost:3100/api/users/login", { email, password });
+    const token = user?.data?.token
+    if (token) {
+      localStorage.setItem('token', token);
+      router.push("/")
+    }
+  }
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-70px)]">
       <Card className="w-full max-w-sm">
@@ -22,8 +38,8 @@ export default function LoginPage() {
             <Button variant="link">Sign Up</Button>
           </CardAction>
         </CardHeader>
+          <form onSubmit={(e)=>handleLogin(e)}>
         <CardContent>
-          <form>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -39,9 +55,8 @@ export default function LoginPage() {
                 <Input id="password" type="password" required />
               </div>
             </div>
-          </form>
         </CardContent>
-        <CardFooter className="flex-col gap-2">
+        <CardFooter className="flex-col gap-2 mt-4">
           <Button type="submit" className="w-full">
             Login
           </Button>
@@ -49,6 +64,7 @@ export default function LoginPage() {
             Login with Google
           </Button>
         </CardFooter>
+          </form>
       </Card>
     </div>
   );
