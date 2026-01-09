@@ -11,12 +11,14 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import axios from "axios";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const [register, { error, isLoading }] = useRegisterMutation();
+  console.log({isLoading:isLoading,error:error});
   const handleRegister =async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -25,11 +27,13 @@ export default function RegisterPage() {
     const password = (form.elements.namedItem("password") as HTMLInputElement).value;
 
     // post form data to backend 
-    const user = await axios.post('http://localhost:3100/api/users/register', { name, email, password });
-    console.log(user);
-    if (user?.data?._id) {
+    try {
+      await register({ name, email, password }).unwrap();
       router.push("/login")
+    } catch (error) {
+      console.log(error);
     }
+   
   }
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-70px)]">
