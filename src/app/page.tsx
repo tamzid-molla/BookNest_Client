@@ -15,6 +15,13 @@ export default function Home() {
   return (
     <div className="max-w-7xl mx-auto">
       {
+        user ? <ul>
+          <li>{ user.name}</li>
+          <li>{ user.email}</li>
+        </ul> :
+          ""
+      }
+      {
         allBook?.data?.books? 
         <div className="mx-auto mt-20 text-center">
         <p className="text-xl font-bold text-center">No book available , Please add book</p>

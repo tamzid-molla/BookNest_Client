@@ -21,7 +21,13 @@ export const authApi = createApi({
     profile: build.query<void,void>({
       query: () => "/me",
     }),
+    logout: build.mutation<void,void>({
+      query: () => ({
+        url: "/logout",
+        method:"POST"
+      })
+    })
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useProfileQuery } = authApi;
+export const { useRegisterMutation, useLoginMutation, useProfileQuery,useLogoutMutation } = authApi;
