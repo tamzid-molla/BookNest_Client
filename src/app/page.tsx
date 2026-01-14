@@ -1,10 +1,17 @@
+"use client"
 import { Button } from "@/components/ui/button";
-import axios from "axios";
+import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
+export default function Home() {
 
-
-export default async function Home() {
-  const allBook = await axios.get('http://localhost:3100/api/books');
+  const user = useAppSelector((state) => state.auth.user);
+  console.log(user);
+ 
+  const allBook = {
+    data: {
+      books: false
+    }
+  }
   return (
     <div className="max-w-7xl mx-auto">
       {

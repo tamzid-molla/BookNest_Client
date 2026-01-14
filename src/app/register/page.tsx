@@ -18,7 +18,6 @@ import { useRouter } from "next/navigation";
 export default function RegisterPage() {
   const router = useRouter();
   const [register, { error, isLoading }] = useRegisterMutation();
-  console.log({isLoading:isLoading,error:error});
   const handleRegister =async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;

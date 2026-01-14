@@ -11,22 +11,37 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import axios from "axios";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 
+
 export default function LoginPage() {
+  const [login, { data, error, isLoading }] = useLoginMutation();
+  const dispatch = useAppDispatch();
+  console.log(data);
   const router = useRouter()
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
      e.preventDefault();
     const form = e.currentTarget;
     const email = (form.elements.namedItem("email") as HTMLInputElement).value;
     const password = (form.elements.namedItem("password") as HTMLInputElement).value;
-    const user = await axios.post("http://localhost:3100/api/users/login", { email, password });
-    const token = user?.data?.token
-    if (token) {
-      localStorage.setItem('token', token);
-      router.push("/")
+
+    try {
+      const user = await login({ email, password }).unwrap();
+      dispatch(setUser(user));
+      router.push("/");
+    } catch (error) {
+      console.log({error:error});
     }
+
+    // const user = await axios.post("http://localhost:3100/api/users/login", { email, password });
+    // const token = user?.data?.token
+    // if (token) {
+    //   localStorage.setItem('token', token);
+    //   router.push("/")
+    // }
   }
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-70px)]">
